@@ -8,6 +8,7 @@ const CELL = 32  # размер клетки мира в пикселях (ну�
 @export var damage: float = 1.0       # урон без меча
 @export var max_hp: float = 10.0
 @export var attack_reach: float = 32.0  # как далеко перед собой бьём (в пикселях)
+@export var attack_size: float = 32.0   # размер розового квадрата удара
 @export var vision_fog: float = 9.0   # радиус круга, за которым серый туман (в клетках)
 @export var vision_grid: float = 6.0  # до скольки клеток видна сетка
 
@@ -54,6 +55,9 @@ func update_sword():
 func update_hitbox():
 	hitbox.position = facing * attack_reach
 	hitbox.rotation = facing.angle()
+	# розовый квадрат всегда того же размера, что и зона удара
+	flash.size = Vector2(attack_size, attack_size)
+	flash.position = -flash.size / 2.0
 
 
 # ---------- ПРОВЕРКИ "МОЖНО ЛИ ТУДА" ----------
@@ -63,20 +67,10 @@ func occupies(pos: Vector2) -> bool:
 	return position.distance_to(pos) < CELL * 0.8
 
 
-# можно ли телу игрока стоять в точке pos:
-# проверяем 4 угла квадрата тела — ни один не должен попасть в гору
+# можно ли телу игрока стоять в точке pos: не в горе и не в мобе
 func spot_is_free(pos: Vector2) -> bool:
-	var half = body_size / 2.0
-	var corners = [
-		pos + Vector2(-half, -half),
-		pos + Vector2(half, -half),
-		pos + Vector2(-half, half),
-		pos + Vector2(half, half),
-	]
-	for corner in corners:
-		if not world.is_walkable(world.ground.local_to_map(corner)):
-			return false
-	# и не налезаем на мобов
+	if not world.body_fits(pos, body_size):
+		return false
 	for mob in get_tree().get_nodes_in_group("mobs"):
 		if mob.position.distance_to(pos) < CELL * 0.8:
 			# если уже стоим вплотную, разрешаем отходить (иначе застрянем)
@@ -154,13 +148,23 @@ func attack():
 		sword.rotation = base - 1.0  # замах
 		var swing = create_tween()
 		swing.tween_property(sword, "rotation", base + 1.0, 0.15)
-	# бьём всех мобов рядом с точкой перед нами
-	var target = position + facing * attack_reach
+	# бьём всех мобов, чей квадрат хоть краем задевает розовый квадрат удара
 	for mob in get_tree().get_nodes_in_group("mobs"):
-		if mob.position.distance_to(target) < CELL * 0.75:
+		if hits(mob):
 			mob.take_damage(dmg)
 	flash.visible = true
 	await get_tree().create_timer(0.2).timeout
 	flash.visible = false
 	attacking = false
 	update_sword()
+
+
+# задевает ли розовый квадрат удара квадрат моба.
+# Квадрат удара повёрнут туда, куда смотрим, поэтому «поворачиваем» моба обратно
+# и сравниваем как два ровных квадрата: пересекаются, если по X и по Y
+# центры ближе, чем половина одного + половина другого.
+func hits(mob) -> bool:
+	var center = position + facing * attack_reach
+	var local = (mob.position - center).rotated(-facing.angle())
+	var reach = attack_size / 2.0 + mob.body_size / 2.0
+	return absf(local.x) < reach and absf(local.y) < reach

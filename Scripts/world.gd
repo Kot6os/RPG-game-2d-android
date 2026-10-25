@@ -10,6 +10,9 @@ const BUSH = Vector2i(1, 0)      # тёмный куст
 const MOUNTAIN = Vector2i(2, 0)  # гора (стена)
 const SPAWN = Vector2i(500, 500) # где появляется игрок
 
+# сетка вокруг игрока: false = выключена. Может вернуться позже как «зона зрения»
+@export var show_grid: bool = false
+
 # шейдер тумана: внутри круга всё как есть, дальше плавно становится тёмно-серым
 const FOG_SHADER = """
 shader_type canvas_item;
@@ -45,11 +48,12 @@ func _ready():
 	player.position = Vector2(SPAWN * CELL) + Vector2(CELL / 2.0, CELL / 2.0)
 	mob.position = player.position + Vector2(3 * CELL, 0)
 
-	# сетка поверх карты (под игроком)
-	grid = Node2D.new()
-	add_child(grid)
-	move_child(grid, 1)
-	grid.draw.connect(_draw_grid)
+	# сетка поверх карты (под игроком), только если включена
+	if show_grid:
+		grid = Node2D.new()
+		add_child(grid)
+		move_child(grid, 1)
+		grid.draw.connect(_draw_grid)
 
 	# туман поверх всего
 	var layer = CanvasLayer.new()
@@ -83,6 +87,16 @@ func is_walkable(cell: Vector2i) -> bool:
 		return false
 	return tile_at(cell) != MOUNTAIN  # по кустам ходить можно, по горам нет
 
+
+# помещается ли квадратное тело размером size в точке pos (не задевает горы).
+# Общая проверка: ей пользуются и игрок, и мобы.
+func body_fits(pos: Vector2, size: float) -> bool:
+	var half = size / 2.0
+	for corner in [Vector2(-half, -half), Vector2(half, -half), Vector2(-half, half), Vector2(half, half)]:
+		if not is_walkable(ground.local_to_map(pos + corner)):
+			return false
+	return true
+
 func _process(_delta):
 	# подгрузка карты вокруг игрока
 	var c = ground.local_to_map(player.position)
@@ -91,7 +105,8 @@ func _process(_delta):
 		redraw(c)
 
 	# сетка
-	grid.queue_redraw()
+	if grid:
+		grid.queue_redraw()
 
 	# туман
 	var fog_px = player.fog_radius() * CELL
