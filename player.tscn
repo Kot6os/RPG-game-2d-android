@@ -27,12 +27,15 @@ position = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_knb8x")
 
 [node name="Flash" type="ColorRect" parent="SwordHitbox" unique_id=643163131]
-visible = false
 offset_left = -16.0
 offset_top = -16.0
 offset_right = 16.0
 offset_bottom = 16.0
-color = Color(1, 0, 1, 0.5137255)
+color = Color(1, 0, 1, 0)
 
 [node name="Stats" type="Node" parent="." unique_id=502693749]
 script = ExtResource("3_i3pqv")
+
+[node name="Arrow" type="Polygon2D" parent="." unique_id=2087656142]
+polygon = PackedVector2Array(18, -6, 28, 0, 18, 6)
+uv = PackedVector2Array(835.86993, 39.54, 866.11993, 27.439995)

@@ -7,7 +7,7 @@ signal leveled_up(new_level)
 const XP_BASE = 25.0        # опыта до 2 уровня
 const XP_GROWTH = 50.0      # на сколько больше нужно с каждым уровнем
 
-var level = 1
+var level = 0
 var xp = 0.0
 
 

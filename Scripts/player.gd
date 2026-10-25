@@ -21,6 +21,7 @@ var attacking := false
 @onready var hitbox: Area2D = $SwordHitbox
 @onready var flash: ColorRect = $SwordHitbox/Flash
 @onready var stats = $Stats
+@onready var arrow = $Arrow
 @onready var world = get_parent()
 
 
@@ -53,6 +54,7 @@ func update_sword():
 
 # зона удара стоит перед игроком и повёрнута туда, куда он смотрит
 func update_hitbox():
+	arrow.rotation = facing.angle()
 	hitbox.position = facing * attack_reach
 	hitbox.rotation = facing.angle()
 	# розовый квадрат всегда того же размера, что и зона удара
@@ -117,7 +119,7 @@ func _physics_process(delta):
 
 	# get_vector сам собирает 4 кнопки в одно направление и делает диагональ
 	# такой же скорости, как прямое движение (иначе по диагонали бегали бы быстрее)
-	var dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	if dir != Vector2.ZERO:
 		facing = dir.normalized()

@@ -8,7 +8,7 @@ extends Node2D
 const CELL = 32  # размер клетки мира в пикселях
 
 @export_group("Бой")
-@export var hp: float = 5.0
+@export var hp: float = 1.1
 @export var attack_damage: float = 1.0     # сколько урона наносит игроку
 @export var attack_cooldown: float = 1.0   # секунд между ударами
 @export var attack_range: float = 34.0     # с какого расстояния (в пикселях) может ударить
@@ -16,8 +16,8 @@ const CELL = 32  # размер клетки мира в пикселях
 
 @export_group("Движение")
 @export var wander_speed: float = 50.0     # пикселей в секунду, когда бродит
-@export var chase_speed: float = 120.0     # когда гонится (у игрока 200, значит моб медленнее)
-@export var body_size: float = 28.0        # размер тела (квадрат)
+@export var chase_speed: float = 115.0     # когда гонится (у игрока 200, значит моб медленнее)
+@export var body_size: float = 30.0        # размер тела (квадрат)
 
 @export_group("Зрение")
 @export var see_range_cells: float = 5.0   # на сколько клеток видит игрока
