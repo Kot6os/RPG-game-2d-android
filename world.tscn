@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://dhsej7lbhtone"]
+
+[ext_resource type="Script" uid="uid://bwsowd4d1ywog" path="res://Scripts/world.gd" id="1_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://beyeq37qyobrm" path="res://player.tscn" id="1_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://cxbowloh7mfge" path="res://Textures/tiles.png" id="2_036b0"]
+[ext_resource type="PackedScene" uid="uid://cj2ft8fww5dwa" path="res://mob.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://bvcnq221c6tyu" path="res://sword.tscn" id="4_036b0"]
+[ext_resource type="PackedScene" uid="uid://blixgl58gk6d7" path="res://ui.tscn" id="6_dwbse"]
+[ext_resource type="Script" uid="uid://bgj8at2a2wfb1" path="res://Scripts/death_screen.gd" id="7_pkg7o"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dwbse"]
+texture = ExtResource("2_036b0")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_uj40v"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_dwbse")
+
+[node name="World" type="Node2D" unique_id=2025052345]
+script = ExtResource("1_aqk2v")
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1251065161]
+tile_set = SubResource("TileSet_uj40v")
+
+[node name="Player" parent="." unique_id=1202005869 instance=ExtResource("1_fj7yv")]
+position = Vector2(48, 48)
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=24706804]
+
+[node name="Sword" parent="Player" unique_id=64415786 instance=ExtResource("4_036b0")]
+position = Vector2(16, 0)
+
+[node name="Mob" parent="." unique_id=1305752356 instance=ExtResource("3_tlwt5")]
+position = Vector2(148, 48)
+attack_damage = 2.0
+attack_cooldown = 2.0
+
+[node name="UI" parent="." unique_id=1487585192 instance=ExtResource("6_dwbse")]
+
+[node name="DeathScreen" type="CanvasLayer" parent="." unique_id=1019223451]
+script = ExtResource("7_pkg7o")

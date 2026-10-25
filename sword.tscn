@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bvcnq221c6tyu"]
+
+[ext_resource type="Texture2D" uid="uid://d0p7ydcl23s44" path="res://Textures/Sword.png" id="1_74bdg"]
+[ext_resource type="Script" uid="uid://c8mtu0lbb0pqn" path="res://Scripts/sword.gd" id="1_e4ynd"]
+
+[node name="Sword" type="Area2D" unique_id=64415786]
+script = ExtResource("1_e4ynd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=932531098]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_74bdg")

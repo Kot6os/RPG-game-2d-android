@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://blixgl58gk6d7"]
+
+[ext_resource type="Script" uid="uid://b5i2m6yd2ddy2" path="res://Scripts/UI.gd" id="1_fyqef"]
+
+[node name="UI" type="CanvasLayer" unique_id=1487585192]
+script = ExtResource("1_fyqef")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=378288972]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+
+[node name="Box" type="VBoxContainer" parent="Margin" unique_id=758713588]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="Margin/Box" unique_id=932569575]
+layout_mode = 2
+text = "lvl. 1"
+
+[node name="HPBar" type="ProgressBar" parent="Margin/Box" unique_id=2058346878]
+custom_minimum_size = Vector2(220, 10)
+layout_mode = 2
+show_percentage = false
+
+[node name="XPBar" type="ProgressBar" parent="Margin/Box" unique_id=479709202]
+custom_minimum_size = Vector2(250, 15)
+layout_mode = 2
+show_percentage = false

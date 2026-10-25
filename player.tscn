@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://beyeq37qyobrm"]
+
+[ext_resource type="Texture2D" uid="uid://c2toy2ejc52at" path="res://Textures/icon.svg" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://k2g7frk3wkr3" path="res://Scripts/player.gd" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://b0oiy4ngoe8dp" path="res://Scripts/stats.gd" id="3_i3pqv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uj40v"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_knb8x"]
+size = Vector2(32, 32)
+
+[node name="Player" type="CharacterBody2D" unique_id=1202005869]
+script = ExtResource("1_onrkg")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=607273128]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_4flbx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1066269722]
+shape = SubResource("RectangleShape2D_uj40v")
+
+[node name="SwordHitbox" type="Area2D" parent="." unique_id=2050317289]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=577399370]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_knb8x")
+
+[node name="Flash" type="ColorRect" parent="SwordHitbox" unique_id=643163131]
+visible = false
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(1, 0, 1, 0.5137255)
+
+[node name="Stats" type="Node" parent="." unique_id=502693749]
+script = ExtResource("3_i3pqv")
